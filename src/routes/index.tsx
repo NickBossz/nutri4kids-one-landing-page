@@ -14,6 +14,7 @@ import { PartnerSchools } from "@/components/home/PartnerSchools";
 import { ProductionGallery } from "@/components/home/ProductionGallery";
 import { SchoolsPreview } from "@/components/home/SchoolsPreview";
 import { TeamSection } from "@/components/home/TeamSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { MenuDrawer } from "@/components/products/MenuDrawer";
 
 export const Route = createFileRoute("/")({
@@ -51,6 +52,7 @@ function HomePage() {
       ```
       <section
         id="sobre"
+        aria-labelledby="about-section-title"
         className="scroll-mt-24 py-16 md:py-24"
       >
         <div className="container-page">
@@ -86,7 +88,10 @@ function HomePage() {
                 Sobre a Nutri4Kids
               </p>
 
-              <h2 className="mt-2 max-w-2xl font-display text-3xl font-bold leading-tight sm:text-4xl">
+              <h2
+                id="about-section-title"
+                className="mt-2 max-w-2xl font-display text-3xl font-bold leading-tight sm:text-4xl"
+              >
                 Alimentação infantil preparada com carinho, organização e
                 propósito.
               </h2>
@@ -143,41 +148,55 @@ function HomePage() {
             </div>
           </div>
         </div>
-
-        <BenefitsSection />
-
-        <ProductionGallery />
       </section>
 
-      <section
+      <div
+        id="diferenciais"
+        className="scroll-mt-24"
+      >
+        <BenefitsSection />
+      </div>
+
+      <div
         id="como-funciona"
-        aria-label="Como funciona"
         className="scroll-mt-24"
       >
         <HowItWorks />
-      </section>
+      </div>
 
       <FeaturedProducts />
 
-      <section
+      <div
+        id="bastidores"
+        className="scroll-mt-24"
+      >
+        <ProductionGallery />
+      </div>
+
+      <div
         id="escolas"
-        aria-label="Escolas parceiras"
+        className="scroll-mt-24"
+      >
+        <SchoolsPreview />
+      </div>
+
+      <div
+        id="escolas-parceiras"
         className="scroll-mt-24"
       >
         <PartnerSchools />
+      </div>
 
-        <SchoolsPreview />
-      </section>
+      <TeamSection />
 
-      <section
+      <TestimonialsSection />
+
+      <div
         id="faq"
-        aria-label="Perguntas frequentes"
         className="scroll-mt-24"
       >
         <FaqSection />
-      </section>
-
-      <TeamSection />
+      </div>
 
       <MenuDrawer />
     </>
