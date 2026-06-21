@@ -13,6 +13,7 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { PartnerSchools } from "@/components/home/PartnerSchools";
 import { ProductionGallery } from "@/components/home/ProductionGallery";
 import { SchoolsPreview } from "@/components/home/SchoolsPreview";
+import { TeamSection } from "@/components/home/TeamSection";
 import { MenuDrawer } from "@/components/products/MenuDrawer";
 
 export const Route = createFileRoute("/")({
@@ -42,12 +43,16 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <>
-      <div id="inicio" className="scroll-mt-24">
-        <HeroSection />
-      </div>
+    <> <div
+      id="inicio"
+      className="scroll-mt-24"
+    > <HeroSection /> </div>
 
-      <section id="sobre" className="scroll-mt-24 py-16 md:py-24">
+      ```
+      <section
+        id="sobre"
+        className="scroll-mt-24 py-16 md:py-24"
+      >
         <div className="container-page">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative">
@@ -140,6 +145,7 @@ function HomePage() {
         </div>
 
         <BenefitsSection />
+
         <ProductionGallery />
       </section>
 
@@ -159,6 +165,7 @@ function HomePage() {
         className="scroll-mt-24"
       >
         <PartnerSchools />
+
         <SchoolsPreview />
       </section>
 
@@ -170,7 +177,11 @@ function HomePage() {
         <FaqSection />
       </section>
 
+      <TeamSection />
+
       <MenuDrawer />
     </>
+
+
   );
 }
