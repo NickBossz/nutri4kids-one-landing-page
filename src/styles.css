@@ -1,0 +1,195 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system — Alimentação infantil
+ * Paleta quente: terracota / creme / verde-oliva
+ * Tipografia: Nunito Sans (display) + Inter (corpo)
+ *
+ * Todos os valores em oklch para suporte completo do Tailwind v4.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-brand: var(--brand-primary);
+  --color-brand-foreground: var(--brand-primary-foreground);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-surface: var(--brand-surface);
+  --color-cream: var(--brand-background);
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-foreground: var(--whatsapp-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-display: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 4px 20px -8px color-mix(in oklab, var(--brand-primary) 18%, transparent);
+  --shadow-card: 0 2px 12px -4px color-mix(in oklab, var(--brand-primary) 12%, transparent);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Paleta terracota / creme / oliva */
+  --brand-primary: oklch(0.58 0.14 38);          /* terracota #c4654a-ish */
+  --brand-primary-foreground: oklch(0.985 0.01 80);
+  --brand-secondary: oklch(0.5 0.07 130);        /* verde-oliva */
+  --brand-accent: oklch(0.78 0.12 70);           /* dourado quente */
+  --brand-background: oklch(0.97 0.018 80);      /* creme */
+  --brand-surface: oklch(0.995 0.006 85);        /* off-white */
+  --brand-text: oklch(0.22 0.03 50);
+  --brand-muted: oklch(0.55 0.02 60);
+  --brand-border: oklch(0.9 0.015 70);
+
+  --background: var(--brand-background);
+  --foreground: var(--brand-text);
+  --card: var(--brand-surface);
+  --card-foreground: var(--brand-text);
+  --popover: var(--brand-surface);
+  --popover-foreground: var(--brand-text);
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--brand-primary-foreground);
+  --secondary: oklch(0.94 0.02 80);
+  --secondary-foreground: var(--brand-text);
+  --muted: oklch(0.95 0.015 80);
+  --muted-foreground: var(--brand-muted);
+  --accent: oklch(0.93 0.04 80);
+  --accent-foreground: var(--brand-text);
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.985 0.01 80);
+  --border: var(--brand-border);
+  --input: var(--brand-border);
+  --ring: var(--brand-primary);
+
+  --whatsapp: oklch(0.62 0.16 145);
+  --whatsapp-foreground: oklch(0.99 0.01 145);
+
+  --chart-1: oklch(0.58 0.14 38);
+  --chart-2: oklch(0.5 0.07 130);
+  --chart-3: oklch(0.78 0.12 70);
+  --chart-4: oklch(0.65 0.1 50);
+  --chart-5: oklch(0.45 0.06 100);
+
+  --sidebar: var(--brand-surface);
+  --sidebar-foreground: var(--brand-text);
+  --sidebar-primary: var(--brand-primary);
+  --sidebar-primary-foreground: var(--brand-primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--brand-text);
+  --sidebar-border: var(--brand-border);
+  --sidebar-ring: var(--brand-primary);
+}
+
+.dark {
+  --background: oklch(0.18 0.02 50);
+  --foreground: oklch(0.97 0.015 80);
+  --card: oklch(0.22 0.025 50);
+  --card-foreground: oklch(0.97 0.015 80);
+  --popover: oklch(0.22 0.025 50);
+  --popover-foreground: oklch(0.97 0.015 80);
+  --primary: oklch(0.68 0.13 38);
+  --primary-foreground: oklch(0.18 0.02 50);
+  --secondary: oklch(0.28 0.03 60);
+  --secondary-foreground: oklch(0.97 0.015 80);
+  --muted: oklch(0.28 0.025 60);
+  --muted-foreground: oklch(0.7 0.02 70);
+  --accent: oklch(0.3 0.04 70);
+  --accent-foreground: oklch(0.97 0.015 80);
+  --destructive: oklch(0.65 0.22 27);
+  --destructive-foreground: oklch(0.99 0.01 80);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.68 0.13 38);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 80rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+}
