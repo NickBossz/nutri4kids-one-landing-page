@@ -1,16 +1,17 @@
 // Configuração centralizada da empresa.
-// Substitua os campos marcados como [PLACEHOLDER] quando os dados reais forem fornecidos.
+// Edite os campos abaixo quando quiser alterar os dados exibidos no site.
 
 export const companyConfig = {
-  name: "Lanchinho Feliz", // [PLACEHOLDER] — substituir pelo nome real
+  name: "Nutri4Kids",
   tagline: "Alimentação feita com carinho para cada fase da infância",
   whatsapp:
-    (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? "5534993340676",
-  instagram: "", // [PLACEHOLDER]
-  email: "", // [PLACEHOLDER]
-  address: "Uberlândia — MG", // [PLACEHOLDER]
-  serviceRegion: "Uberlândia e região", // [PLACEHOLDER]
-  businessHours: "Seg a Sex • 8h às 18h", // [PLACEHOLDER]
+    (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ??
+    "5534993340676",
+  instagram: "",
+  email: "",
+  address: "Uberlândia — MG",
+  serviceRegion: "Uberlândia e região",
+  businessHours: "Seg a Sex • 8h às 18h",
   minimumOrder: "",
   deliveryNotice:
     "Produtos, valores, prazos e disponibilidade estão sujeitos à confirmação durante o atendimento.",

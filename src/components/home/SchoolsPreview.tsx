@@ -4,10 +4,13 @@ import {
   School,
   Users,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
+import {
+  buildWhatsappUrl,
+  isWhatsappConfigured,
+} from "@/lib/whatsapp";
 
 const BENEFITS = [
   {
@@ -31,6 +34,12 @@ const BENEFITS = [
 ];
 
 export function SchoolsPreview() {
+  const whatsappUrl = isWhatsappConfigured()
+    ? buildWhatsappUrl(
+        "Olá! Gostaria de conhecer as soluções da Nutri4Kids para escolas.",
+      )
+    : undefined;
+
   return (
     <section className="border-y border-border bg-muted/30 py-16 md:py-20">
       <div className="container-page">
@@ -50,21 +59,23 @@ export function SchoolsPreview() {
               realidade de cada escola.
             </p>
 
-            <Button
-              asChild
-              size="lg"
-              className="mt-7"
-              onClick={() =>
-                track("schools_preview_clicked", {
-                  target: "escolas",
-                })
-              }
-            >
-              <Link to="/escolas">
-                Conhecer a solução para escolas
-                <ArrowRight aria-hidden="true" />
-              </Link>
-            </Button>
+            {whatsappUrl && (
+              <Button asChild size="lg" className="mt-7">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    track("schools_preview_clicked", {
+                      target: "whatsapp",
+                    })
+                  }
+                >
+                  Conhecer a solução para escolas
+                  <ArrowRight aria-hidden="true" />
+                </a>
+              </Button>
+            )}
           </div>
 
           <div className="grid gap-4">

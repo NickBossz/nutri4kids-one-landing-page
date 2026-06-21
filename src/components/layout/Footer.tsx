@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import {
   Clock,
   Instagram,
@@ -7,6 +6,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 
+import { openMenuDrawer } from "@/components/products/MenuDrawer";
 import { Logo } from "@/components/shared/Logo";
 import { companyConfig } from "@/config/company";
 import {
@@ -16,22 +16,33 @@ import {
 
 const FOOTER_NAVIGATION = [
   {
-    to: "/" as const,
-    label: "Início",
+    id: "sobre",
+    label: "Sobre",
   },
   {
-    to: "/produtos" as const,
+    id: "como-funciona",
+    label: "Como funciona",
+  },
+  {
+    id: "produtos",
     label: "Cardápio",
   },
   {
-    to: "/escolas" as const,
-    label: "Para escolas",
+    id: "escolas",
+    label: "Escolas",
   },
   {
-    to: "/sobre" as const,
-    label: "Sobre nós",
+    id: "faq",
+    label: "Dúvidas",
   },
-];
+] as const;
+
+function scrollToSection(sectionId: string) {
+  document.getElementById(sectionId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 export function Footer() {
   const whatsappUrl = isWhatsappConfigured()
@@ -40,11 +51,26 @@ export function Footer() {
       )
     : undefined;
 
+  const handleNavigation = (sectionId: string) => {
+    if (sectionId === "produtos") {
+      openMenuDrawer();
+      return;
+    }
+
+    scrollToSection(sectionId);
+  };
+
   return (
     <footer className="border-t border-border bg-card">
       <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.8fr_1fr]">
         <div>
-          <Logo />
+          <button
+            type="button"
+            aria-label="Voltar ao início"
+            onClick={() => scrollToSection("inicio")}
+          >
+            <Logo />
+          </button>
 
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
             Lanches infantis, kits e soluções personalizadas para famílias e
@@ -59,37 +85,27 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-bold">
-            Navegação
-          </h2>
+          <h2 className="font-display text-lg font-bold">Navegação</h2>
 
           <nav
             aria-label="Navegação do rodapé"
             className="mt-4 flex flex-col items-start gap-3"
           >
             {FOOTER_NAVIGATION.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleNavigation(item.id)}
                 className="text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 {item.label}
-              </Link>
+              </button>
             ))}
-
-            <Link
-              to="/politica-de-privacidade"
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
-              Política de privacidade
-            </Link>
           </nav>
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-bold">
-            Atendimento
-          </h2>
+          <h2 className="font-display text-lg font-bold">Atendimento</h2>
 
           <ul className="mt-4 space-y-4 text-sm text-muted-foreground">
             {whatsappUrl && (
@@ -104,7 +120,6 @@ export function Footer() {
                     className="mt-0.5 h-4 w-4 shrink-0"
                     aria-hidden="true"
                   />
-
                   Falar pelo WhatsApp
                 </a>
               </li>
@@ -122,7 +137,6 @@ export function Footer() {
                     className="mt-0.5 h-4 w-4 shrink-0"
                     aria-hidden="true"
                   />
-
                   Instagram
                 </a>
               </li>
@@ -138,7 +152,6 @@ export function Footer() {
                     className="mt-0.5 h-4 w-4 shrink-0"
                     aria-hidden="true"
                   />
-
                   {companyConfig.email}
                 </a>
               </li>
@@ -150,7 +163,6 @@ export function Footer() {
                   className="mt-0.5 h-4 w-4 shrink-0"
                   aria-hidden="true"
                 />
-
                 {companyConfig.serviceRegion}
               </li>
             )}
@@ -161,7 +173,6 @@ export function Footer() {
                   className="mt-0.5 h-4 w-4 shrink-0"
                   aria-hidden="true"
                 />
-
                 {companyConfig.businessHours}
               </li>
             )}
@@ -176,9 +187,7 @@ export function Footer() {
             reservados.
           </p>
 
-          <p>
-            Lanches preparados para famílias e escolas.
-          </p>
+          <p>Lanches preparados para famílias e escolas.</p>
         </div>
       </div>
     </footer>

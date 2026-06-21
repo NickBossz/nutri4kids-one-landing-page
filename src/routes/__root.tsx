@@ -1,62 +1,58 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
+  HeadContent,
+  Navigate,
   Outlet,
-  Link,
+  Scripts,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { GrowingPlant } from "@/components/shared/GrowingPlant";
 import { Toaster } from "@/components/ui/sonner";
 import { captureUtm } from "@/lib/utm";
-import { GrowingPlant } from "@/components/shared/GrowingPlant";
 
 function NotFoundComponent() {
-  return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl font-extrabold text-primary">404</h1>
-        <h2 className="mt-4 font-display text-xl font-bold">Página não encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A página que você procura foi movida ou não existe.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Voltar ao início
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  return <Navigate to="/" replace />;
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
   console.error(error);
+
   const router = useRouter();
+
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportLovableError(error, {
+      boundary: "tanstack_root_error_component",
+    });
   }, [error]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold">Algo deu errado</h1>
+
         <p className="mt-2 text-sm text-muted-foreground">
           Tente novamente ou volte para o início.
         </p>
+
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
+            type="button"
             onClick={() => {
               router.invalidate();
               reset();
@@ -65,6 +61,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Tentar novamente
           </button>
+
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-accent"
@@ -77,37 +74,70 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lanchinho Feliz | Lanches, lancheiras e alimentação para crianças" },
+      {
+        charSet: "utf-8",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      {
+        title: "Nutri4Kids | Lanches infantis para famílias e escolas",
+      },
       {
         name: "description",
         content:
-          "Conheça nossos lanches, kits e soluções de alimentação para famílias e escolas parceiras. Monte seu pedido e confirme tudo pelo WhatsApp.",
+          "Conheça os lanches, kits e soluções da Nutri4Kids para famílias e escolas parceiras. Monte o pedido e confirme pelo WhatsApp.",
       },
-      { name: "author", content: "Lanchinho Feliz" },
-      { name: "theme-color", content: "#c4654a" },
-      { property: "og:title", content: "Lanchinho Feliz | Lanches, lancheiras e alimentação para crianças" },
+      {
+        name: "author",
+        content: "Nutri4Kids",
+      },
+      {
+        name: "theme-color",
+        content: "#c4654a",
+      },
+      {
+        property: "og:title",
+        content: "Nutri4Kids | Lanches infantis para famílias e escolas",
+      },
       {
         property: "og:description",
         content:
-          "Alimentação cuidadosa para famílias, crianças e escolas parceiras. Pedidos pelo WhatsApp.",
+          "Alimentação infantil preparada para famílias e escolas parceiras, com pedidos pelo WhatsApp.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Lanchinho Feliz | Lanches, lancheiras e alimentação para crianças" },
-      { name: "description", content: "A website for a children's food company, showcasing products, facilitating orders via WhatsApp, and attracting school partnerships." },
-      { property: "og:description", content: "A website for a children's food company, showcasing products, facilitating orders via WhatsApp, and attracting school partnerships." },
-      { name: "twitter:description", content: "A website for a children's food company, showcasing products, facilitating orders via WhatsApp, and attracting school partnerships." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5c67c0fd-db8e-4ffd-9df0-db6522d1edea/id-preview-4dc9ebc7--e1af7eff-0af5-40e4-b39b-4bc58d31fb24.lovable.app-1782044623550.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5c67c0fd-db8e-4ffd-9df0-db6522d1edea/id-preview-4dc9ebc7--e1af7eff-0af5-40e4-b39b-4bc58d31fb24.lovable.app-1782044623550.png" },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Nutri4Kids | Lanches infantis para famílias e escolas",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Lanches, kits e soluções personalizadas para famílias e escolas.",
+      },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "stylesheet",
+        href: appCss,
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
       {
         rel: "preconnect",
         href: "https://fonts.gstatic.com",
@@ -131,6 +161,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
+
       <body>
         {children}
         <Scripts />
@@ -160,9 +191,7 @@ function RootComponent() {
       </div>
 
       <CartDrawer />
-
       <GrowingPlant />
-
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );

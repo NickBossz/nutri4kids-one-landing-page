@@ -39,13 +39,7 @@ const NAV_ITEMS = [
 ] as const;
 
 function scrollToSection(sectionId: string) {
-  const element = document.getElementById(sectionId);
-
-  if (!element) {
-    return;
-  }
-
-  element.scrollIntoView({
+  document.getElementById(sectionId)?.scrollIntoView({
     behavior: "smooth",
     block: "start",
   });
@@ -65,11 +59,7 @@ export function Header() {
       for (const item of NAV_ITEMS) {
         const section = document.getElementById(item.id);
 
-        if (!section) {
-          continue;
-        }
-
-        if (section.getBoundingClientRect().top <= 160) {
+        if (section && section.getBoundingClientRect().top <= 160) {
           currentSection = item.id;
         }
       }
@@ -150,7 +140,6 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <PlantToggle />
-
           <CartButton />
 
           <Button
@@ -161,10 +150,7 @@ export function Header() {
             Ver cardápio
           </Button>
 
-          <Sheet
-            open={mobileMenuOpen}
-            onOpenChange={setMobileMenuOpen}
-          >
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
                 type="button"

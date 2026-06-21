@@ -1,11 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   HeartHandshake,
-  Leaf,
   School,
-  ShieldCheck,
   Sparkles,
-  UtensilsCrossed,
 } from "lucide-react";
 
 import { BenefitsSection } from "@/components/home/BenefitsSection";
@@ -27,7 +24,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Lanches infantis, kits, lancheiras e soluções personalizadas para famílias e escolas parceiras.",
+          "Lanches infantis, kits e pedidos personalizados para famílias e escolas.",
       },
       {
         property: "og:title",
@@ -45,19 +42,12 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <main>
-      <section
-        id="inicio"
-        aria-label="Início"
-        className="scroll-mt-24"
-      >
+    <>
+      <div id="inicio" className="scroll-mt-24">
         <HeroSection />
-      </section>
+      </div>
 
-      <section
-        id="sobre"
-        className="scroll-mt-24 py-16 md:py-24"
-      >
+      <section id="sobre" className="scroll-mt-24 py-16 md:py-24">
         <div className="container-page">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative">
@@ -148,14 +138,9 @@ function HomePage() {
             </div>
           </div>
         </div>
-      </section>
 
-      <section
-        id="beneficios"
-        aria-label="Benefícios"
-        className="scroll-mt-24"
-      >
         <BenefitsSection />
+        <ProductionGallery />
       </section>
 
       <section
@@ -167,77 +152,6 @@ function HomePage() {
       </section>
 
       <FeaturedProducts />
-
-      <section className="pb-16 md:pb-20">
-        <div className="container-page">
-          <div className="rounded-[2rem] border border-border bg-card p-6 shadow-sm sm:p-8">
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <UtensilsCrossed
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="font-display font-bold">
-                    Produção cuidadosa
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Produtos preparados com organização e atenção em cada etapa.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <Leaf className="h-5 w-5" aria-hidden="true" />
-                </div>
-
-                <div>
-                  <h3 className="font-display font-bold">
-                    Opções variadas
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Lanches, doces, salgados, frutas e bebidas para diferentes
-                    momentos.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <ShieldCheck
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="font-display font-bold">
-                    Pedido pelo WhatsApp
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Adicione os produtos ao carrinho e envie o pedido completo.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="bastidores"
-        aria-label="Bastidores da produção"
-        className="scroll-mt-24"
-      >
-        <ProductionGallery />
-      </section>
 
       <section
         id="escolas"
@@ -257,6 +171,6 @@ function HomePage() {
       </section>
 
       <MenuDrawer />
-    </main>
+    </>
   );
 }
