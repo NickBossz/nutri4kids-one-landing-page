@@ -193,3 +193,17 @@
     padding-inline: 2rem;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+section[id],
+div[id] {
+  scroll-margin-top: 6rem;
+}

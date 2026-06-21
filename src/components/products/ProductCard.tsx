@@ -1,27 +1,31 @@
-import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Clock3, Plus } from "lucide-react";
+import { toast } from "sonner";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatBRL } from "@/lib/currency";
+import { track } from "@/lib/analytics";
+import { useCartStore } from "@/store/cart-store";
 import type { Product } from "@/types";
 import { PRODUCT_TAG_LABELS } from "@/types";
-import { useCartStore } from "@/store/cart-store";
-import { track } from "@/lib/analytics";
-import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const addItem = useCartStore((s) => s.addItem);
+  const addItem = useCartStore((state) => state.addItem);
 
   const handleAdd = () => {
     if (product.price === null) {
-      toast.info("Este item tem valor sob consulta — fale conosco pelo WhatsApp.");
+      toast.info("Este item tem valor sob consulta.", {
+        description: "Entre em contato conosco pelo WhatsApp.",
+      });
+
       return;
     }
+
     addItem({
       productId: product.id,
       quantity: 1,
@@ -30,87 +34,110 @@ export function ProductCard({ product }: ProductCardProps) {
       image: product.images[0],
       slug: product.slug,
     });
-    track("product_added_to_cart", { id: product.id });
-    toast.success("Adicionado ao carrinho", { description: product.name });
+
+    track("product_added_to_cart", {
+      id: product.id,
+    });
+
+    toast.success("Adicionado ao carrinho", {
+      description: product.name,
+    });
   };
 
   return (
     <motion.article
-      whileHover={{ y: -3 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)]"
+      initial={{
+        opacity: 0,
+        y: 12,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.15,
+      }}
+      transition={{
+        duration: 0.35,
+      }}
+      className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
-      <Link
-        to="/produtos/$slug"
-        params={{ slug: product.slug }}
-        className="relative block aspect-[4/3] overflow-hidden bg-muted"
-        aria-label={`Ver detalhes de ${product.name}`}
-      >
+      <div className="relative overflow-hidden bg-muted">
         <img
           src={product.images[0]}
           alt={product.name}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
-        {product.placeholder && (
-          <span className="absolute left-3 top-3 rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Placeholder
-          </span>
-        )}
-        {product.leadTimeHours && (
-          <span className="absolute right-3 top-3 rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium text-foreground">
-            Pedido com {product.leadTimeHours}h de antecedência
-          </span>
-        )}
-      </Link>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            {product.category}
-          </p>
-          <h3 className="mt-0.5 truncate font-display text-lg font-bold">
-            <Link
-              to="/produtos/$slug"
-              params={{ slug: product.slug }}
-              className="hover:text-primary"
-            >
-              {product.name}
-            </Link>
-          </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-            {product.shortDescription}
-          </p>
+        <div className="absolute left-3 top-3 flex max-w-[calc(100%-1.5rem)] flex-wrap gap-2">
+          {product.placeholder && (
+            <Badge variant="secondary">Placeholder</Badge>
+          )}
+
+          {product.popular && (
+            <Badge className="shadow-sm">Mais pedido</Badge>
+          )}
         </div>
 
+        {product.leadTimeHours && (
+          <div className="absolute bottom-3 left-3 right-3">
+            <div className="flex w-fit items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-medium shadow-sm backdrop-blur">
+              <Clock3 className="h-3.5 w-3.5" aria-hidden="true" />
+              Pedido com {product.leadTimeHours}h de antecedência
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+          {product.category}
+        </p>
+
+        <h3 className="mt-2 font-display text-xl font-bold leading-tight">
+          {product.name}
+        </h3>
+
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+          {product.shortDescription}
+        </p>
+
         {product.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {product.tags.slice(0, 3).map((t) => (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {product.tags.slice(0, 3).map((tag) => (
               <Badge
-                key={t}
-                variant="secondary"
-                className="border border-border bg-accent text-[10px] font-medium"
+                key={tag}
+                variant="outline"
+                className="rounded-full text-[11px]"
               >
-                {PRODUCT_TAG_LABELS[t]}
+                {PRODUCT_TAG_LABELS[tag]}
               </Badge>
             ))}
           </div>
         )}
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-1">
+        <div className="mt-auto flex items-end justify-between gap-4 pt-6">
           <div>
-            <p className="text-xs text-muted-foreground">{product.unit}</p>
-            <p className="font-display text-xl font-extrabold text-foreground">
+            <p className="text-xs text-muted-foreground">
+              {product.unit}
+            </p>
+
+            <p className="mt-0.5 font-display text-xl font-bold text-foreground">
               {product.priceLabel ?? formatBRL(product.price)}
             </p>
           </div>
+
           <Button
+            type="button"
             size="sm"
-            variant="hero"
+            disabled={!product.available}
             onClick={handleAdd}
-            aria-label={`Adicionar ${product.name} ao carrinho`}
+            className="shrink-0 rounded-full"
           >
-            <Plus /> Adicionar
+            <Plus className="mr-1 h-4 w-4" aria-hidden="true" />
+            Adicionar
           </Button>
         </div>
       </div>
