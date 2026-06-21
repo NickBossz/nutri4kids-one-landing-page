@@ -4,8 +4,8 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatBRL } from "@/lib/currency";
 import { track } from "@/lib/analytics";
+import { formatBRL } from "@/lib/currency";
 import { useCartStore } from "@/store/cart-store";
 import type { Product } from "@/types";
 import { PRODUCT_TAG_LABELS } from "@/types";
@@ -19,10 +19,9 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleAdd = () => {
     if (product.price === null) {
-      toast.info("Este item tem valor sob consulta.", {
-        description: "Entre em contato conosco pelo WhatsApp.",
-      });
-
+      toast.info(
+        "Este item tem valor sob consulta — fale conosco pelo WhatsApp.",
+      );
       return;
     }
 
@@ -120,10 +119,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="mt-auto flex items-end justify-between gap-4 pt-6">
           <div>
-            <p className="text-xs text-muted-foreground">
-              {product.unit}
-            </p>
-
+            <p className="text-xs text-muted-foreground">{product.unit}</p>
             <p className="mt-0.5 font-display text-xl font-bold text-foreground">
               {product.priceLabel ?? formatBRL(product.price)}
             </p>

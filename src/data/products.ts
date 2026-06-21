@@ -14,7 +14,7 @@ export const products: Product[] = [
     category: "salgados",
     price: 8,
     unit: "unidade",
-    images: [productImage("risole de abobora.jpg")],
+    images: [productImage("risole de abobora.jpeg")],
     featured: true,
     popular: true,
     available: true,
@@ -32,7 +32,7 @@ export const products: Product[] = [
     category: "doces",
     price: 8,
     unit: "unidade",
-    images: [productImage("cupcake.jpg")],
+    images: [productImage("cupcake.jpeg")],
     featured: true,
     popular: true,
     available: true,
@@ -50,7 +50,7 @@ export const products: Product[] = [
     category: "doces",
     price: 7,
     unit: "porção",
-    images: [productImage("bolacha.jpg")],
+    images: [productImage("bolacha.jpeg")],
     featured: true,
     popular: true,
     available: true,
@@ -383,6 +383,7 @@ export const products: Product[] = [
     placeholder: false,
   },
 ];
+
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((product) => product.slug === slug);

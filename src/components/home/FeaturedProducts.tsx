@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
-import { ProductCard } from "@/components/products/ProductCard";
 import { openMenuDrawer } from "@/components/products/MenuDrawer";
+import { ProductCard } from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -75,17 +75,6 @@ export function FeaturedProducts() {
             <CarouselNext className="static translate-y-0" />
           </div>
         </Carousel>
-
-        <div className="mt-8 flex justify-center sm:hidden">
-          <Button
-            type="button"
-            onClick={openMenuDrawer}
-            className="w-full rounded-full"
-          >
-            Ver cardápio completo
-            <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-          </Button>
-        </div>
       </div>
     </section>
   );

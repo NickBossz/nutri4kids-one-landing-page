@@ -1,9 +1,16 @@
 import { ChevronDown, School, ShoppingBasket } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "@tanstack/react-router";
 
+import { openMenuDrawer } from "@/components/products/MenuDrawer";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
+
+function scrollToSection(sectionId: string) {
+  document.getElementById(sectionId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 export function HeroSection() {
   return (
@@ -14,7 +21,6 @@ export function HeroSection() {
           alt=""
           className="h-full w-full object-cover"
         />
-
         <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/60" />
       </div>
 
@@ -43,35 +49,33 @@ export function HeroSection() {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Button
-              asChild
+              type="button"
               size="xl"
               variant="hero"
-              onClick={() =>
+              onClick={() => {
                 track("hero_primary_cta_clicked", {
                   target: "produtos",
-                })
-              }
+                });
+                openMenuDrawer();
+              }}
             >
-              <Link to="/produtos">
-                <ShoppingBasket aria-hidden="true" />
-                Ver cardápio
-              </Link>
+              <ShoppingBasket aria-hidden="true" />
+              Ver cardápio
             </Button>
 
             <Button
-              asChild
+              type="button"
               size="xl"
               variant="outline"
-              onClick={() =>
+              onClick={() => {
                 track("hero_secondary_cta_clicked", {
                   target: "escolas",
-                })
-              }
+                });
+                scrollToSection("escolas");
+              }}
             >
-              <Link to="/escolas">
-                <School aria-hidden="true" />
-                Sou de uma escola
-              </Link>
+              <School aria-hidden="true" />
+              Sou de uma escola
             </Button>
           </div>
 
@@ -83,7 +87,6 @@ export function HeroSection() {
               />
               Produção própria
             </li>
-
             <li className="flex items-center gap-2">
               <span
                 className="h-1.5 w-1.5 rounded-full bg-primary"
@@ -91,7 +94,6 @@ export function HeroSection() {
               />
               Pedidos personalizados
             </li>
-
             <li className="flex items-center gap-2">
               <span
                 className="h-1.5 w-1.5 rounded-full bg-primary"
@@ -116,7 +118,6 @@ export function HeroSection() {
             className="absolute -left-8 -top-8 h-40 w-40 rounded-full bg-primary/20 blur-3xl"
             aria-hidden="true"
           />
-
           <div
             className="absolute -bottom-10 -right-8 h-48 w-48 rounded-full bg-secondary/30 blur-3xl"
             aria-hidden="true"
@@ -133,7 +134,6 @@ export function HeroSection() {
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                 Escolha do seu jeito
               </p>
-
               <p className="mt-2 font-display text-lg font-bold text-foreground">
                 Produtos individuais, kits e pedidos para escolas.
               </p>
@@ -142,8 +142,9 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      <a
-        href="#diferenciais"
+      <button
+        type="button"
+        onClick={() => scrollToSection("sobre")}
         className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-primary md:inline-flex"
       >
         Conhecer
@@ -151,7 +152,7 @@ export function HeroSection() {
           className="h-4 w-4 animate-bounce"
           aria-hidden="true"
         />
-      </a>
+      </button>
     </section>
   );
 }
