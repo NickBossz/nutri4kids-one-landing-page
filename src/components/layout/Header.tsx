@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
 
 import { CartButton } from "@/components/cart/CartButton";
+import { openMenuDrawer } from "@/components/products/MenuDrawer";
 import { Logo } from "@/components/shared/Logo";
+import { PlantToggle } from "@/components/shared/PlantToggle";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -14,34 +15,66 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-import { PlantToggle } from "@/components/shared/PlantToggle";
-
 const NAV_ITEMS = [
   {
-    to: "/" as const,
-    label: "Início",
+    id: "sobre",
+    label: "Sobre",
   },
   {
-    to: "/produtos" as const,
+    id: "como-funciona",
+    label: "Como funciona",
+  },
+  {
+    id: "produtos",
     label: "Cardápio",
   },
   {
-    to: "/escolas" as const,
-    label: "Para escolas",
+    id: "escolas",
+    label: "Escolas",
   },
   {
-    to: "/sobre" as const,
-    label: "Sobre nós",
+    id: "faq",
+    label: "Dúvidas",
   },
-];
+] as const;
+
+function scrollToSection(sectionId: string) {
+  const element = document.getElementById(sectionId);
+
+  if (!element) {
+    return;
+  }
+
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 24);
+
+      let currentSection = "";
+
+      for (const item of NAV_ITEMS) {
+        const section = document.getElementById(item.id);
+
+        if (!section) {
+          continue;
+        }
+
+        if (section.getBoundingClientRect().top <= 160) {
+          currentSection = item.id;
+        }
+      }
+
+      setActiveSection(currentSection);
     };
 
     handleScroll();
@@ -55,6 +88,22 @@ export function Header() {
     };
   }, []);
 
+  const handleNavigation = (sectionId: string) => {
+    setMobileMenuOpen(false);
+
+    window.setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 100);
+  };
+
+  const handleOpenMenu = () => {
+    setMobileMenuOpen(false);
+
+    window.setTimeout(() => {
+      openMenuDrawer();
+    }, 100);
+  };
+
   return (
     <header
       className={cn(
@@ -64,53 +113,52 @@ export function Header() {
           : "border-transparent bg-background/85 backdrop-blur",
       )}
     >
-      <div className="container-page flex h-18 items-center justify-between gap-4">
-        <Link
-          to="/"
-          aria-label="Ir para a página inicial"
+      <div className="container-page flex h-[72px] items-center justify-between gap-4">
+        <button
+          type="button"
+          aria-label="Voltar ao início"
+          onClick={() => handleNavigation("inicio")}
           className="shrink-0"
         >
           <Logo />
-        </Link>
+        </button>
 
         <nav
           aria-label="Navegação principal"
           className="hidden items-center gap-1 lg:flex"
         >
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeOptions={{
-                exact: item.to === "/",
-              }}
-              activeProps={{
-                className: "bg-accent text-primary font-semibold",
-              }}
-              inactiveProps={{
-                className:
-                  "text-foreground/75 hover:bg-accent hover:text-foreground",
-              }}
-              className="rounded-xl px-4 py-2 text-sm transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const active = activeSection === item.id;
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleNavigation(item.id)}
+                className={cn(
+                  "rounded-xl px-4 py-2 text-sm transition-colors",
+                  active
+                    ? "bg-accent font-semibold text-primary"
+                    : "text-foreground/75 hover:bg-accent hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
-        
-        
+
         <div className="flex items-center gap-2">
           <PlantToggle />
 
           <CartButton />
 
           <Button
-            asChild
-            className="hidden lg:inline-flex"
+            type="button"
+            onClick={handleOpenMenu}
+            className="hidden rounded-full lg:inline-flex"
           >
-            <Link to="/produtos">
-              Ver cardápio
-            </Link>
+            Ver cardápio
           </Button>
 
           <Sheet
@@ -123,9 +171,9 @@ export function Header() {
                 variant="outline"
                 size="icon"
                 className="lg:hidden"
-                aria-label="Abrir menu"
+                aria-label="Abrir menu de navegação"
               >
-                <Menu aria-hidden="true" />
+                <Menu className="h-5 w-5" aria-hidden="true" />
               </Button>
             </SheetTrigger>
 
@@ -135,41 +183,36 @@ export function Header() {
               </SheetHeader>
 
               <nav
-                aria-label="Navegação para dispositivos móveis"
                 className="mt-8 flex flex-col gap-2"
+                aria-label="Navegação móvel"
               >
-                {NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setMobileMenuOpen(false)}
-                    activeOptions={{
-                      exact: item.to === "/",
-                    }}
-                    activeProps={{
-                      className: "bg-accent text-primary font-semibold",
-                    }}
-                    inactiveProps={{
-                      className:
-                        "text-foreground/80 hover:bg-accent",
-                    }}
-                    className="rounded-xl px-4 py-3 text-base transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                {NAV_ITEMS.map((item) => {
+                  const active = activeSection === item.id;
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleNavigation(item.id)}
+                      className={cn(
+                        "rounded-xl px-4 py-3 text-left text-base transition-colors",
+                        active
+                          ? "bg-accent font-semibold text-primary"
+                          : "text-foreground/80 hover:bg-accent",
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
 
                 <Button
-                  asChild
+                  type="button"
                   size="lg"
-                  className="mt-4 w-full"
+                  onClick={handleOpenMenu}
+                  className="mt-4 w-full rounded-full"
                 >
-                  <Link
-                    to="/produtos"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Ver cardápio
-                  </Link>
+                  Ver cardápio completo
                 </Button>
               </nav>
             </SheetContent>

@@ -1,4 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+
+import { ProductCard } from "@/components/products/ProductCard";
+import { openMenuDrawer } from "@/components/products/MenuDrawer";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -6,46 +10,83 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/products/ProductCard";
 import { getFeaturedProducts } from "@/data/products";
 
 export function FeaturedProducts() {
   const items = getFeaturedProducts();
-  return (
-    <section className="container-page py-16 md:py-20">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Em destaque
-          </p>
-          <h2 className="mt-1 font-display text-3xl font-bold sm:text-4xl">
-            Produtos que as crianças amam
-          </h2>
-        </div>
-        <Button asChild variant="outline">
-          <Link to="/produtos">Ver catálogo completo</Link>
-        </Button>
-      </div>
 
-      <Carousel
-        opts={{ align: "start", loop: false }}
-        className="mt-8"
-        aria-label="Produtos em destaque"
-      >
-        <CarouselContent className="-ml-4">
-          {items.map((p) => (
-            <CarouselItem
-              key={p.id}
-              className="basis-[85%] pl-4 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+  return (
+    <section
+      id="produtos"
+      className="scroll-mt-24 py-16 md:py-24"
+      aria-labelledby="featured-products-title"
+    >
+      <div className="container-page">
+        <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Em destaque
+            </p>
+
+            <h2
+              id="featured-products-title"
+              className="mt-2 max-w-2xl font-display text-3xl font-bold leading-tight sm:text-4xl"
             >
-              <ProductCard product={p} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:inline-flex" />
-        <CarouselNext className="hidden md:inline-flex" />
-      </Carousel>
+              Produtos que as crianças amam
+            </h2>
+
+            <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
+              Conheça alguns dos produtos mais pedidos da Nutri4Kids.
+            </p>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={openMenuDrawer}
+            className="w-fit rounded-full"
+          >
+            Ver cardápio completo
+            <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+          </Button>
+        </div>
+
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {items.map((product) => (
+              <CarouselItem
+                key={product.id}
+                className="pl-4 sm:basis-1/2 lg:basis-1/3"
+              >
+                <div className="h-full py-1">
+                  <ProductCard product={product} />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <div className="mt-8 flex justify-end gap-2">
+            <CarouselPrevious className="static translate-y-0" />
+            <CarouselNext className="static translate-y-0" />
+          </div>
+        </Carousel>
+
+        <div className="mt-8 flex justify-center sm:hidden">
+          <Button
+            type="button"
+            onClick={openMenuDrawer}
+            className="w-full rounded-full"
+          >
+            Ver cardápio completo
+            <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }
